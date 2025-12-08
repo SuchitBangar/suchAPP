@@ -1,3 +1,5 @@
-Flask
-pypdf
-gTTS
+Flask==3.0.0
+gTTS==2.5.1
+PyPDF2==3.0.0
+werkzeug==3.0.1
+gunicorn
