@@ -1,7 +1,7 @@
 import os
 from pypdf import PdfWriter, PdfReader
 from gtts import gTTS
-import pyttsx3  # <--- NEW LIBRARY FOR SPEED
+# Removed pyttsx3 because it crashes on Linux servers
 
 def merge_pdfs(file_paths, output_path):
     """Merges multiple PDFs into one."""
@@ -38,23 +38,19 @@ def extract_text_from_pdf(pdf_path):
     return text
 
 def text_to_audio(text, output_path, language='en', accent='com'):
-    """ONLINE: High quality, but slower. Good for short text."""
+    """ONLINE: High quality, but slower."""
     if not text.strip():
         raise ValueError("No text provided to convert.")
     tts = gTTS(text=text, lang=language, tld=accent, slow=False)
     tts.save(output_path)
 
 def text_to_audio_offline(text, output_path):
-    """OFFLINE: Fast, robotic voice. Good for large PDFs."""
+    """
+    MODIFIED FOR SERVER: Uses gTTS instead of pyttsx3 to prevent crashing.
+    """
     if not text.strip():
         raise ValueError("No text provided.")
     
-    engine = pyttsx3.init()
-    
-    # Optional settings to make it sound better
-    engine.setProperty('rate', 150)  # Speed (default is often 200)
-    engine.setProperty('volume', 1.0) # Volume (0.0 to 1.0)
-    
-    # Save to file
-    engine.save_to_file(text, output_path)
-    engine.runAndWait()
+    # We use gTTS here too because pyttsx3 fails on Render/Vercel servers
+    tts = gTTS(text=text, lang='en', slow=False)
+    tts.save(output_path)
