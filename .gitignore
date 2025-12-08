@@ -1,0 +1,5 @@
+outputs/
+inputs/
+audio_inputs/
+*.mp3
+*.wav
