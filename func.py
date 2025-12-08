@@ -26,14 +26,6 @@ def split_pdf(file_path, output_folder):
         saved_files.append(output_path)
     return saved_files
 
-def text_to_audio(text, output_path, language='en', accent='com'):
-    """Converts text to audio with specific accent."""
-    if not text.strip():
-        raise ValueError("No text provided to convert.")
-    tts = gTTS(text=text, lang=language, tld=accent, slow=False)
-    tts.save(output_path)
-
-# --- NEW FUNCTION ---
 def extract_text_from_pdf(pdf_path):
     """Extracts all text from a PDF file."""
     reader = PdfReader(pdf_path)
@@ -43,3 +35,21 @@ def extract_text_from_pdf(pdf_path):
         if extracted:
             text += extracted + "\n"
     return text
+
+def text_to_audio(text, output_path, language='en', accent='com'):
+    """ONLINE: High quality, but slower."""
+    if not text.strip():
+        raise ValueError("No text provided to convert.")
+    tts = gTTS(text=text, lang=language, tld=accent, slow=False)
+    tts.save(output_path)
+
+# --- THIS IS THE MISSING FUNCTION CAUSING THE CRASH ---
+def text_to_audio_offline(text, output_path):
+    """
+    Simulates offline mode using gTTS to prevent crashing on Render.
+    """
+    if not text.strip():
+        raise ValueError("No text provided.")
+    # We use gTTS here because pyttsx3 crashes on servers
+    tts = gTTS(text=text, lang='en', slow=False)
+    tts.save(output_path)
