@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOCMORF</title>
+    <title>DOCMORF Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -15,6 +15,11 @@
             --accent: #f43f5e;       /* Rose */
             --purple: #8b5cf6;       /* Violet */
             --game: #10b981;         /* Emerald */
+            --orange: #f97316;       /* Orange (Compress) */
+            --lock: #eab308;         /* Gold (Protect) */
+            --pink: #ec4899;         /* Pink (Img to PDF) */
+            --cyan: #06b6d4;         /* Cyan (AI Gen) */
+            
             --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
             --card-bg: rgba(255, 255, 255, 0.98);
             --text-main: #1e293b;
@@ -38,8 +43,7 @@
 
         /* --- NAVIGATION BAR --- */
         .navbar {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: var(--nav-height);
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height);
             background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(12px);
             display: flex; align-items: center; justify-content: space-between;
@@ -49,8 +53,7 @@
 
         .logo {
             font-size: 1.5rem; font-weight: 800; color: white;
-            text-decoration: none; letter-spacing: -0.5px;
-            cursor: pointer;
+            text-decoration: none; letter-spacing: -0.5px; cursor: pointer;
         }
 
         .nav-links { display: flex; gap: 30px; list-style: none; }
@@ -60,8 +63,6 @@
             font-weight: 600; font-size: 0.95rem; transition: all 0.3s;
             position: relative;
         }
-        
-        /* Active State / Hover */
         .nav-link:hover, .nav-link.active { color: white; }
         .nav-link::after {
             content: ''; position: absolute; width: 0; height: 2px;
@@ -70,18 +71,14 @@
         }
         .nav-link.active::after { width: 100%; }
 
-        /* --- SECTIONS LOGIC --- */
+        /* --- SECTIONS --- */
         .section-view {
-            display: none; /* Hidden by default */
-            width: 100%;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            animation: fadeIn 0.5s ease-out;
+            display: none; width: 100%;
+            flex-direction: column; align-items: center;
+            padding: 20px; animation: fadeIn 0.5s ease-out;
         }
         .section-view.active-section { display: flex; }
 
-        /* --- HEADER STYLES --- */
         header { text-align: center; margin: 30px 0 40px 0; color: white; }
         h1 {
             font-size: 2.5rem; font-weight: 800; margin-bottom: 10px;
@@ -90,7 +87,7 @@
         }
         .subtitle { font-size: 1.1rem; opacity: 0.8; font-weight: 400; }
 
-        /* --- GRID & CARD STYLES (HOME) --- */
+        /* --- GRID & CARDS --- */
         .grid-container {
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px;
             width: 100%; max-width: 900px; padding-bottom: 40px;
@@ -107,8 +104,14 @@
         .card-wide .card-header { border-bottom: none; margin: 0; padding: 0; flex-direction: column; align-items: flex-start; min-width: 180px; }
 
         .icon-box { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        
+        /* Icon Colors */
         .icon-merge { background: #e0e7ff; color: var(--primary); }
         .icon-split { background: #e0f2fe; color: var(--secondary); }
+        .icon-compress { background: #ffedd5; color: var(--orange); }
+        .icon-protect { background: #fef9c3; color: var(--lock); }
+        .icon-img { background: #fce7f3; color: var(--pink); }
+        .icon-gen { background: #cffafe; color: var(--cyan); }
         .icon-audio { background: #ffe4e6; color: var(--accent); }
         .icon-pdf-audio { background: #ede9fe; color: var(--purple); }
         .icon-game { background: #d1fae5; color: var(--game); }
@@ -116,24 +119,33 @@
         h3 { font-size: 1.2rem; font-weight: 700; color: var(--text-main); }
         .description { font-size: 0.9rem; color: var(--text-sub); margin-bottom: 20px; }
         
-        /* Forms */
+        /* Forms & Inputs */
         form { display: flex; flex-direction: column; gap: 12px; flex-grow: 1; }
         .file-upload-wrapper { position: relative; margin-bottom: auto; }
-        input[type="file"], select, textarea { width: 100%; padding: 10px; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 8px; color: var(--text-sub); font-family: inherit; font-size: 0.9rem; }
-        select, textarea { border-style: solid; border-color: #e2e8f0; }
+        input[type="file"], select, textarea, input[type="password"] { 
+            width: 100%; padding: 10px; background: #f8fafc; 
+            border: 2px dashed #cbd5e1; border-radius: 8px; 
+            color: var(--text-sub); font-family: inherit; font-size: 0.9rem; 
+        }
+        select, textarea, input[type="password"] { border-style: solid; border-color: #e2e8f0; }
         input[type="file"]:hover { border-color: var(--primary); background: #eef2ff; }
         textarea { resize: none; height: 70px; }
         
         /* Buttons */
         button { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 700; font-size: 0.95rem; cursor: pointer; color: white; transition: all 0.2s; margin-top: 5px; }
         button:active { transform: scale(0.98); }
+        
         .btn-merge { background: var(--primary); }
         .btn-split { background: var(--secondary); }
+        .btn-compress { background: var(--orange); }
+        .btn-protect { background: var(--lock); }
+        .btn-img { background: var(--pink); }
+        .btn-gen { background: var(--cyan); }
         .btn-audio { background: var(--accent); }
         .btn-pdf-audio { background: var(--purple); }
         .btn-game { background: var(--game); margin-top: 15px; }
 
-        /* Game Specifics */
+        /* Game Styles */
         .game-container { display: flex; flex-grow: 1; align-items: flex-start; gap: 20px; width: 100%; justify-content: center; }
         .word-list-panel { display: flex; flex-direction: column; gap: 10px; min-width: 120px; }
         .word-tag { font-size: 0.8rem; background: #f1f5f9; padding: 6px 10px; border-radius: 6px; color: var(--text-sub); font-weight: 600; text-align: center; }
@@ -143,24 +155,17 @@
         .letter-box.selected { background: var(--game); color: white; border-color: var(--game); }
         .letter-box.found { background: #d1fae5; color: #065f46; border-color: #34d399; }
 
-        /* --- INFO & CONTACT PAGES STYLES --- */
-        .page-container {
-            background: white; padding: 40px; border-radius: 16px;
-            width: 90%; max-width: 600px; margin-top: 20px;
-            text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
+        /* Pages */
+        .page-container { background: white; padding: 40px; border-radius: 16px; width: 90%; max-width: 600px; margin-top: 20px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
         .page-container h2 { color: var(--primary); margin-bottom: 20px; font-size: 2rem; }
         .page-text { color: var(--text-sub); line-height: 1.6; margin-bottom: 20px; font-size: 1rem; }
-        .version-badge { background: #e0e7ff; color: var(--primary); padding: 5px 15px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; display: inline-block; margin-bottom: 20px; }
+        .version-badge { background: #e0e7ff; color: var(--primary); padding: 5px 15px; border-radius: 20px; font-weight: 600; display: inline-block; margin-bottom: 20px; }
         
-        .contact-item {
-            background: #f8fafc; padding: 15px; margin: 15px 0;
-            border-radius: 8px; border: 1px solid #e2e8f0; text-align: left;
-        }
+        .contact-item { background: #f8fafc; padding: 15px; margin: 15px 0; border-radius: 8px; border: 1px solid #e2e8f0; text-align: left; }
         .contact-label { display: block; font-size: 0.85rem; color: #64748b; font-weight: 600; }
         .contact-value { font-size: 1.1rem; color: #1e293b; font-weight: 500; }
 
-        /* Audio Player & Flash */
+        /* Audio Player & Messages */
         .audio-result { width: 100%; max-width: 600px; background: white; padding: 15px 25px; border-radius: 50px; margin-bottom: 40px; display: flex; align-items: center; gap: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: fadeIn 0.5s ease; }
         audio { height: 35px; flex-grow: 1; }
         .download-btn { background: #f1f5f9; color: var(--text-main); text-decoration: none; padding: 8px 15px; border-radius: 20px; font-weight: 600; font-size: 0.85rem; white-space: nowrap; }
@@ -202,18 +207,15 @@
     </div>
 
     <div id="home-section" class="section-view active-section">
-        
         <header>
             <h1>DOCMORF</h1>
-            <p class="subtitle">Your all-in-one document workspace</p>
+            <p class="subtitle">Your all-in-one document & creative workspace</p>
         </header>
 
         {% if audio_file %}
         <div class="audio-result">
             <div style="font-size:1.5rem;">🎧</div>
-            <audio controls autoplay>
-                <source src="{{ url_for('get_audio', filename=audio_file) }}" type="audio/mpeg">
-            </audio>
+            <audio controls autoplay><source src="{{ url_for('get_audio', filename=audio_file) }}" type="audio/mpeg"></audio>
             <a href="{{ url_for('get_audio', filename=audio_file) }}" download="studio_audio.mp3" class="download-btn">⬇ Save</a>
         </div>
         {% endif %}
@@ -238,8 +240,47 @@
             </div>
 
             <div class="card">
+                <div class="card-header"><div class="icon-box icon-compress">📉</div><h3>Compress PDF</h3></div>
+                <p class="description">Reduce file size losslessly.</p>
+                <form action="/compress" method="post" enctype="multipart/form-data">
+                    <div class="file-upload-wrapper"><input type="file" name="file" accept=".pdf" required></div>
+                    <button type="submit" class="btn-compress">Compress PDF</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><div class="icon-box icon-protect">🔒</div><h3>Protect PDF</h3></div>
+                <p class="description">Encrypt your PDF with a password.</p>
+                <form action="/protect" method="post" enctype="multipart/form-data">
+                    <div class="file-upload-wrapper"><input type="file" name="file" accept=".pdf" required></div>
+                    <input type="password" name="password" placeholder="Set Password..." required style="margin-top:5px;">
+                    <button type="submit" class="btn-protect">Lock PDF</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><div class="icon-box icon-img">🖼️</div><h3>Image to PDF</h3></div>
+                <p class="description">Convert JPG/PNG to PDF.</p>
+                <form action="/img-to-pdf" method="post" enctype="multipart/form-data">
+                    <div class="file-upload-wrapper"><input type="file" name="files" multiple accept="image/*" required></div>
+                    <button type="submit" class="btn-img">Convert Images</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><div class="icon-box icon-gen">🎨</div><h3>AI Image Gen</h3></div>
+                <p class="description">Create images from text.</p>
+                <form action="/generate-image" method="post">
+                    <div class="file-upload-wrapper" style="border:none; padding:0; background:none;">
+                        <textarea name="text_prompt" placeholder="A futuristic city..." required style="height:70px;"></textarea>
+                    </div>
+                    <button type="submit" class="btn-gen">Generate Image</button>
+                </form>
+            </div>
+
+            <div class="card">
                 <div class="card-header"><div class="icon-box icon-audio">🔊</div><h3>Text to Audio</h3></div>
-                <p class="description">Convert text to natural speech.</p>
+                <p class="description">Convert text to speech.</p>
                 <form action="/text-to-speech" method="post">
                     <select name="accent"><option value="com">🇺🇸 US English</option><option value="co.uk">🇬🇧 UK English</option></select>
                     <textarea name="text_input" placeholder="Paste text..." required></textarea>
@@ -249,10 +290,10 @@
 
             <div class="card">
                 <div class="card-header"><div class="icon-box icon-pdf-audio">🎙️</div><h3>PDF to Audio</h3></div>
-                <p class="description">Turn a PDF into an audiobook.</p>
+                <p class="description">Turn PDF into audiobook.</p>
                 <form action="/pdf-to-audio" method="post" enctype="multipart/form-data">
                     <div class="file-upload-wrapper"><input type="file" name="file" accept=".pdf" required></div>
-                    <select name="accent" style="margin-top:5px;"><option value="com">🇺🇸 US English</option><option value="co.uk">🇬🇧 UK English</option></select>
+                    <select name="accent" style="margin-top:5px;"><option value="com">🇺🇸 US</option><option value="co.uk">🇬🇧 UK</option></select>
                     <button type="submit" class="btn-pdf-audio">Create Audiobook</button>
                 </form>
             </div>
@@ -260,10 +301,7 @@
             <div class="card card-wide">
                 <div class="card-header">
                     <div class="icon-box icon-game">🎮</div>
-                    <div style="margin-top:10px;">
-                        <h3>Word Finder</h3>
-                        <p class="description" style="margin:0; font-size:0.85rem;">Find tech words!</p>
-                    </div>
+                    <div style="margin-top:10px;"><h3>Word Finder</h3><p class="description" style="margin:0; font-size:0.85rem;">Find tech words!</p></div>
                     <button onclick="initGame()" class="btn-game">New Game 🔄</button>
                 </div>
                 <div class="game-container">
@@ -277,21 +315,19 @@
     <div id="info-section" class="section-view">
         <header>
             <h1>About Studio</h1>
-            <p class="subtitle">Version 3.0</p>
+            <p class="subtitle">Version 4.0 - Ultimate Edition</p>
         </header>
-        
         <div class="page-container">
             <span class="version-badge">Secure & Fast</span>
-            <p class="page-text">
-                This application is a powerful, all-in-one document workspace designed to streamline your daily tasks.
-                Built with <strong>Flask</strong> (Python) and modern web technologies.
-            </p>
+            <p class="page-text">A powerful, all-in-one workspace built with Flask (Python) and modern web tech.</p>
             <p class="page-text">
                 <strong>Features:</strong><br>
-                - Secure PDF Merging & Splitting<br>
-                - Offline PDF-to-Audio conversion (Privacy Focused)<br>
-                - Instant Text-to-Speech engine<br>
-                - Built-in entertainment for wait times
+                - Merge, Split, Compress & Protect PDFs<br>
+                - Convert Images to PDF<br>
+                - <strong>NEW: AI Image Generator</strong><br>
+                - Offline PDF-to-Audio conversion<br>
+                - Text-to-Speech engine<br>
+                - Built-in entertainment
             </p>
             <p class="page-text" style="font-size: 0.9rem; margin-top: 30px;">
                 <em>No data is stored permanently. All files are deleted immediately after processing.</em>
@@ -304,43 +340,25 @@
             <h1>Get in Touch</h1>
             <p class="subtitle">We'd love to hear from you</p>
         </header>
-
         <div class="page-container">
-            <div class="contact-item">
-                <span class="contact-label">Developer</span>
-                <span class="contact-value">Suchit Bangar</span>
-            </div>
-            <div class="contact-item">
-                <span class="contact-label">Email Support</span>
-                <span class="contact-value">suchitbangar17@gmail.com</span>
-            </div>
-            <div class="contact-item">
-                <span class="contact-label">GitHub</span>
-                <span class="contact-value">SuchitBangar</span>
-            </div>
-            <div class="contact-item">
-                <span class="contact-label">Location</span>
-                <span class="contact-value">Ghansoli</span>
-            </div>
+            <div class="contact-item"><span class="contact-label">Developer</span><span class="contact-value">Suchit Bangar</span></div>
+            <div class="contact-item"><span class="contact-label">Email Support</span><span class="contact-value">suchitbangar17@gmail.com</span></div>
+            <div class="contact-item"><span class="contact-label">GitHub</span><span class="contact-value">SuchitBangar</span></div>
+            <div class="contact-item"><span class="contact-label">Location</span><span class="contact-value">Ghansoli</span></div>
         </div>
     </div>
 
     <script>
-        // --- SECTION SWITCHER ---
+        // --- NAVIGATION ---
         function switchSection(sectionName) {
-            // Hide all sections
             document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active-section'));
-            // Remove active nav state
             document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-
-            // Show target section
             document.getElementById(sectionName + '-section').classList.add('active-section');
-            // Set active nav link
             document.getElementById('nav-' + sectionName).classList.add('active');
         }
 
-        // --- WORD FINDER GAME LOGIC ---
-        const allWords = ["PYTHON", "FLASK", "PDF", "AUDIO", "CODE", "DATA", "WEB", "APP", "FILE", "TECH", "MERGE", "SPLIT", "MUSIC", "ROBOT"];
+        // --- GAME LOGIC ---
+        const allWords = ["PYTHON", "FLASK", "PDF", "AUDIO", "CODE", "DATA", "WEB", "APP", "FILE", "TECH", "MERGE", "SPLIT", "IMAGE", "AI"];
         let currentWords = [], selectedCells = [], gridSize = 8;
         
         function initGame() {

@@ -3,3 +3,5 @@ gTTS==2.5.1
 pypdf
 werkzeug==3.0.1
 gunicorn
+Pillow
+requests
