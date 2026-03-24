@@ -58,15 +58,13 @@ def compress_pdf(input_path, output_path):
     reader = PdfReader(input_path)
     writer = PdfWriter()
     
-    # 1. First add pages to the writer
+    # FIX: Pages must be added to the writer BEFORE they can be compressed
     for page in reader.pages:
         writer.add_page(page)
         
-    # 2. Then compress the content streams from the writer
     for page in writer.pages:
         page.compress_content_streams()
         
-    # 3. Remove identical objects
     writer.compress_identical_objects()
     
     with open(output_path, "wb") as f:
@@ -93,15 +91,16 @@ def images_to_pdf(image_paths, output_path):
     if images:
         images[0].save(output_path, "PDF", resolution=100.0, save_all=True, append_images=images[1:])
 
-# --- NEW AI IMAGE GENERATOR ---
+# --- UPDATED AI IMAGE GENERATOR ---
 def generate_image_from_text(prompt, output_path):
-    """Generates an image from text using a free external API."""
+    """Generates an image from text using the new 2026 Unified API."""
     encoded_prompt = quote(prompt)
     
-    # Updated to the new API endpoint
-    api_url = f"https://gen.pollinations.ai/image/{encoded_prompt}"
+    # NEW ENDPOINT: gen.pollinations.ai replaces image.pollinations.ai
+    # PARAMETER: Added ?model=flux to ensure stable generation
+    api_url = f"https://gen.pollinations.ai/image/{encoded_prompt}?model=flux&width=1024&height=1024&nologo=true"
     
-    # Increased timeout to 120s just to be safe
+    # 120s timeout to handle the new higher-quality generation pipeline
     response = requests.get(api_url, timeout=120)
     
     if response.status_code == 200:
