@@ -57,10 +57,18 @@ def compress_pdf(input_path, output_path):
     """Compresses PDF by removing duplication and compacting streams."""
     reader = PdfReader(input_path)
     writer = PdfWriter()
+    
+    # 1. First add pages to the writer
     for page in reader.pages:
-        page.compress_content_streams()
         writer.add_page(page)
+        
+    # 2. Then compress the content streams from the writer
+    for page in writer.pages:
+        page.compress_content_streams()
+        
+    # 3. Remove identical objects
     writer.compress_identical_objects()
+    
     with open(output_path, "wb") as f:
         writer.write(f)
 
@@ -89,8 +97,13 @@ def images_to_pdf(image_paths, output_path):
 def generate_image_from_text(prompt, output_path):
     """Generates an image from text using a free external API."""
     encoded_prompt = quote(prompt)
-    api_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}"
-    response = requests.get(api_url, timeout=60)
+    
+    # Updated to the new API endpoint
+    api_url = f"https://gen.pollinations.ai/image/{encoded_prompt}"
+    
+    # Increased timeout to 120s just to be safe
+    response = requests.get(api_url, timeout=120)
+    
     if response.status_code == 200:
         with open(output_path, 'wb') as f:
             f.write(response.content)
